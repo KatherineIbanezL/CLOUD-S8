@@ -140,7 +140,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
-          AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
+          AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET }}
           CONSUMER_SIMULATE_ERROR_FOR_PRODUCT: ${{ secrets.CONSUMER_SIMULATE_ERROR_FOR_PRODUCT }}
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -171,7 +171,7 @@ jobs:
             AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
             AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
             AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN}
-            AWS_S3_BUCKET_NAME=${AWS_S3_BUCKET_NAME}
+            AWS_S3_BUCKET_NAME=${AWS_S3_BUCKET}
             CONSUMER_SIMULATE_ERROR_FOR_PRODUCT=${CONSUMER_SIMULATE_ERROR_FOR_PRODUCT}
             EOF
 
@@ -179,6 +179,7 @@ jobs:
 
             ./docker-compose -f compose.microservices.yml --env-file .env pull
             ./docker-compose -f compose.microservices.yml --env-file .env up -d
+
 
             docker image prune -f
             docker ps --filter name=producer-service
