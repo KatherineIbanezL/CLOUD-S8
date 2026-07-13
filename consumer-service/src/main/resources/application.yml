@@ -1,8 +1,10 @@
 spring:
   application:
     name: consumer-service
+  
+  # 1. CONFIGURACIÓN DIRECTA DE ORACLE CLOUD
   datasource:
-    url: jdbc:oracle:thin:@(description=(retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.sa-santiago-1.oraclecloud.com))(connect_data=(service_name=gc3b947da08b29a_mbd_medium.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))
+    url: jdbc:oracle:thin:@(description=(retry_count=20)...
     driver-class-name: oracle.jdbc.OracleDriver
     username: ADMIN
     password: DUOCmbd#2026
@@ -12,6 +14,7 @@ spring:
       ddl-auto: update
     show-sql: true
 
+  # 2. CONFIGURACIÓN DE CONEXIÓN A RABBITMQ
   rabbitmq:
     host: ${RABBITMQ_HOST:rabbitmq}
     port: ${RABBITMQ_PORT:5672}
@@ -27,10 +30,20 @@ spring:
           multiplier: 2
           max-interval: 10s
 
+  # 3. CONFIGURACIÓN DE CREDENCIALES Y SERVICIOS AWS
+  cloud:
+    aws:
+      credentials:
+        access-key: ${AWS_ACCESS_KEY_ID}
+        secret-key: ${AWS_SECRET_ACCESS_KEY}
+        session-token: ${AWS_SESSION_TOKEN}
+      region:
+        static: us-east-1
+      s3:
+        bucket-name: ${AWS_S3_BUCKET_NAME:bucketduoc-s1}
+
 oracle.net.tns_admin: "/app/src/main/resources/Wallet_MBD"
 oracle.net.wallet_location: "/app/src/main/resources/Wallet_MBD"
-
-aws.s3.bucket-name: ${AWS_S3_BUCKET_NAME:bucketduoc-s1}
 
 server:
   port: ${SERVER_PORT:8082}

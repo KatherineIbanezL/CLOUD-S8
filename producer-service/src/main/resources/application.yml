@@ -38,9 +38,9 @@ spring:
   cloud:
     aws:
       credentials:
-        access-key: ${AWS_ACCESS_KEY_ID:REMPLAZAR_EN_EL_SERVIDOR}
-        secret-key: ${AWS_SECRET_ACCESS_KEY:REMPLAZAR_EN_EL_SERVIDOR}
-        session-token: ${AWS_SESSION_TOKEN:REMPLAZAR_EN_EL_SERVIDOR}
+        access-key: ${AWS_ACCESS_KEY_ID}
+        secret-key: ${AWS_SECRET_ACCESS_KEY}
+        session-token: ${AWS_SESSION_TOKEN}
       region:
         static: us-east-1
 
