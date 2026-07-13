@@ -5,8 +5,8 @@ services:
     restart: unless-stopped
     hostname: rabbitmq
     environment:
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME:admin}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:admin123}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
     ports:
       - "5672:5672"
       - "15672:15672"
