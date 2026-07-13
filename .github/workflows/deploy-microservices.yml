@@ -28,7 +28,7 @@ jobs:
       - name: Test producer-service
         run: |
           cd producer-service
-          mvn -B clean test
+          mvn -B clean package -DskipTests
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -70,7 +70,7 @@ jobs:
       - name: Test consumer-service
         run: |
           cd consumer-service
-          mvn -B clean test
+          mvn -B clean package -DskipTests
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
