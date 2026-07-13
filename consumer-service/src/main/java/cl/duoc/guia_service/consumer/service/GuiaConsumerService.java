@@ -18,7 +18,6 @@ public class GuiaConsumerService {
     @Value("${app.consumer.simulate-error-for-transportista:false}")
     private boolean simulateErrorForTransportista;
 
-    // Inyectamos tu DocumentoService local para actualizar Oracle Cloud
     public GuiaConsumerService(DocumentoService documentoService) {
         this.documentoService = documentoService;
     }
@@ -28,7 +27,6 @@ public class GuiaConsumerService {
         log.info("Mensaje recibido desde RabbitMQ. eventId={}, numeroGuia={}, transportista={}",
                 event.eventId(), event.numeroGuia(), event.transportista());
 
-        // Simulación estricta de errores al estilo del profesor usando el campo transportista
         if (simulateErrorForTransportista && event.transportista() != null && event.transportista().equalsIgnoreCase(TRASPORTISTA_ERROR)) {
             log.error("¡Simulación de falla activada! Desviando evento {} a la Dead Letter Queue (DLQ)...", event.eventId());
             throw new IllegalStateException("Error simulado para probar reintentos y Dead Letter Queue");
@@ -38,7 +36,6 @@ public class GuiaConsumerService {
         log.info("Archivo en S3={}, Estado inicial del evento={}", event.nombreArchivo(), event.estado());
 
         try {
-            // Llamamos a tu servicio para cambiar el estado en Oracle Cloud de PENDIENTE a PROCESADO
             documentoService.procesarEstadoGuia(event.nombreArchivo());
             
             log.info("Guía {} procesada correctamente y registrada en Oracle Cloud.", event.numeroGuia());

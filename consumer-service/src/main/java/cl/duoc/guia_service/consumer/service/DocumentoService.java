@@ -15,13 +15,13 @@ public class DocumentoService {
     }
 
     public void procesarEstadoGuia(String s3Key) {
-        // Buscamos el documento en la BD local usando el s3Key del evento
+        // Buscar el documento en la BD local usando el s3Key del evento
         Documento documento = documentoRepository.findAll().stream()
                 .filter(d -> s3Key.equals(d.getS3Key()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Guía no encontrada en base de datos para la llave S3: " + s3Key));
 
-        // Actualizamos su estado para cerrar el ciclo asíncrono
+        // Actualizar su estado para cerrar el ciclo asíncrono
         documento.setEstado("PROCESADO");
         documento.setFechaModificacion(LocalDateTime.now());
 

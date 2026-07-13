@@ -53,7 +53,7 @@ public class DocumentoService {
                 doc.getEstado()
         );
 
-        // 4. Despachamos a la Cola 1 mediante RabbitMQ
+        // 4. Despachar a la Cola 1 mediante RabbitMQ
         guiaProducerService.enviarGuia(evento);
 
         return doc;
@@ -64,7 +64,6 @@ public class DocumentoService {
         Documento documento = documentoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Documento no encontrado"));
 
-        // Los records de Java no usan "get", se llaman directo como funciones:
         if (dto.transportista() != null) {
             documento.setTransportistaEntity(dto.transportista());
         }

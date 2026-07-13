@@ -27,22 +27,21 @@ public class DocumentoController {
         this.documentoService = documentoService;
     }
 
-    // 1. ENDPOINT: SUBIR / GENERAR RESUMEN
+    // 1. ENDPOINT: SUBIR / GENERAR
     @PostMapping("/generar")
     public ResponseEntity<CrearGuiaResponse> generarDocumento(@Valid @RequestBody CrearGuiaRequest request) {
         try {
             byte[] mockPdf = "Contenido simulado del PDF".getBytes(); 
             
-            // Delegamos todo al servicio Guarda en Oracle local, sube a S3 y envía el evento a RabbitMQ
             Documento doc = documentoService.registrarDocumento(request.transportista(), request.nombreArchivo(), mockPdf);
 
-            // Generamos el ID de evento para la respuesta del cliente REST
+            // Generar el ID de evento para la respuesta del cliente REST
             String eventId = UUID.randomUUID().toString().substring(0, 8).toUpperCase(); 
 
-            // Construimos la respuesta formal estructurada en el record
+            // Construir la respuesta formal estructurada en el record
             CrearGuiaResponse response = new CrearGuiaResponse(
                     "La guía se recibió exitosamente, se subió a S3 y está en cola para su procesamiento.",
-                    doc.getS3Key(), // Contiene la ruta del archivo estructurada
+                    doc.getS3Key(), 
                     eventId
             );
 

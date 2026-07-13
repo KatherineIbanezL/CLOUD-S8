@@ -70,7 +70,6 @@ public class RabbitMQConsumerConfig {
 
     @Bean
     MessageConverter jsonMessageConverter() {
-        // CORREGIDO: Apuesta a tu paquete shared de eventos para que no falle la deserialización
         return new Jackson2JsonMessageConverter("cl.duoc.guia_service.shared.events");
     }
 
@@ -83,7 +82,7 @@ public class RabbitMQConsumerConfig {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         configurer.configure(factory, connectionFactory);
         factory.setMessageConverter(jsonMessageConverter);
-        factory.setDefaultRequeueRejected(false); // Si falla, va directo a la DLQ sin hacer bucles infinitos
+        factory.setDefaultRequeueRejected(false); // Si falla, va directo a la DLQ sin hacer bucles
         return factory;
     }
 }

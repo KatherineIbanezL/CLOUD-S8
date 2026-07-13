@@ -16,7 +16,7 @@ spring:
       ddl-auto: update
     show-sql: true
 
-  # 3. CONFIGURACIÓN DE DE CONEXIÓN A RABBITMQ (ESTILO PROFESOR)
+  # 3. CONFIGURACIÓN DE CONEXIÓN A RABBITMQ
   rabbitmq:
     host: ${RABBITMQ_HOST:rabbitmq}
     port: ${RABBITMQ_PORT:5672}
@@ -26,7 +26,7 @@ spring:
       simple:
         default-requeue-rejected: false
 
-  # 4. CONFIGURACIÓN DE SEGURIDAD IDaaS (OAuth 2.0 - Azure AD B2C)
+  # 4. CONFIGURACIÓN DE SEGURIDAD IDaaS
   security:
     oauth2:
       resourceserver:
@@ -34,7 +34,6 @@ spring:
           issuer-uri: ${ISSUER_URI}
           jwk-set-uri: ${JWK_SET_URI}
 
-  # 5. CONFIGURACIÓN DE CREDENCIALES Y SERVICIOS AWS 
   cloud:
     aws:
       credentials:

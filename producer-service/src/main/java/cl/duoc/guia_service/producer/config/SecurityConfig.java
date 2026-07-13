@@ -53,7 +53,6 @@ public class SecurityConfig {
         Converter<Jwt, Collection<GrantedAuthority>> authoritiesConverter = jwt -> {
             Set<GrantedAuthority> authorities = new HashSet<>(defaultScopesConverter.convert(jwt));
             
-            // Evaluamos los diferentes claims para extraer roles de Azure AD B2C
             addClaimAuthorities(jwt.getClaim("extension_role"), authorities);
             addClaimAuthorities(jwt.getClaim("role"), authorities);
             addClaimAuthorities(jwt.getClaim("roles"), authorities);
@@ -89,7 +88,7 @@ public class SecurityConfig {
             return;
         }
 
-        // Normaliza el rol para que siempre empiece con "ROLE_" en mayúsculas (estándar de Spring Security)
+        // Normaliza el rol para que siempre empiece con "ROLE_" en mayúsculas
         String authority = normalizedRole.startsWith("ROLE_")
                 ? normalizedRole.toUpperCase()
                 : "ROLE_" + normalizedRole.toUpperCase();
