@@ -1,0 +1,60 @@
+spring:
+  application:
+    name: consumer-service
+  datasource:
+    url: jdbc:oracle:thin:@(description=(retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.sa-santiago-1.oraclecloud.com))(connect_data=(service_name=gc3b947da08b29a_mbd_medium.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))
+    driver-class-name: oracle.jdbc.OracleDriver
+    username: ADMIN
+    password: DUOCmbd#2026
+  jpa:
+    database-platform: org.hibernate.dialect.Oracle12cDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  rabbitmq:
+    host: ${RABBITMQ_HOST:rabbitmq}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:admin}
+    password: ${RABBITMQ_PASSWORD:admin123}
+    listener:
+      simple:
+        default-requeue-rejected: false
+        retry:
+          enabled: true
+          initial-interval: 2s
+          max-attempts: 3
+          multiplier: 2
+          max-interval: 10s
+
+oracle.net.tns_admin: "/app/src/main/resources/Wallet_MBD"
+oracle.net.wallet_location: "/app/src/main/resources/Wallet_MBD"
+
+aws.s3.bucket-name: ${AWS_S3_BUCKET_NAME:bucketduoc-s1}
+
+server:
+  port: ${SERVER_PORT:8082}
+
+app:
+  consumer:
+    simulate-error-for-transportista: ${CONSUMER_SIMULATE_ERROR_FOR_PRODUCT:false}
+  rabbitmq:
+    exchange: guia.exchange
+    queue: cola-guias-exitosas
+    routing-key: guia.routing.key
+    dlx-exchange: guia.dlx.exchange
+    dlq: cola-guias-errores
+    dlq-routing-key: guia.dlq.routing.key
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    "[org.springframework.security]": "INFO"

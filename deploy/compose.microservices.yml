@@ -1,0 +1,50 @@
+services:
+  producer-service:
+    image: ${DOCKERHUB_USERNAME}/producer-service:${IMAGE_TAG:-latest}
+    container_name: producer-service
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      SERVER_PORT: 8081
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:admin}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:admin123}
+      ISSUER_URI: ${ISSUER_URI}
+      JWK_SET_URI: ${JWK_SET_URI}
+      AUDIENCE: ${AUDIENCE}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
+      AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME:bucketduoc-s1}
+    volumes:
+      - ../producer-service/src/main/resources/Wallet_MBD:/app/src/main/resources/Wallet_MBD
+    networks:
+      - guia-network
+
+  consumer-service:
+    image: ${DOCKERHUB_USERNAME}/consumer-service:${IMAGE_TAG:-latest}
+    container_name: consumer-service
+    restart: unless-stopped
+    ports:
+      - "8082:8082"
+    environment:
+      SERVER_PORT: 8082
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:admin}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:admin123}
+      CONSUMER_SIMULATE_ERROR_FOR_PRODUCT: ${CONSUMER_SIMULATE_ERROR_FOR_PRODUCT:false}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
+      AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME:bucketduoc-s1}
+    volumes:
+      - ../consumer-service/src/main/resources/Wallet_MBD:/app/src/main/resources/Wallet_MBD
+    networks:
+      - guia-network
+
+networks:
+  cloudnative-net:
+    external: true

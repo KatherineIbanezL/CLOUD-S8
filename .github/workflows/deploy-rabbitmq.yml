@@ -1,0 +1,64 @@
+name: Deploy RabbitMQ
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-rabbitmq:
+    name: Deploy RabbitMQ on EC2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare deployment directories on EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            set -e
+            mkdir -p /home/${{ secrets.EC2_USER }}/producer-service
+            mkdir -p /home/${{ secrets.EC2_USER }}/consumer-service
+            mkdir -p /home/${{ secrets.EC2_USER }}/rabbitmq
+
+      - name: Copy RabbitMQ compose file to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "deploy/compose.rabbitmq.yml"
+          target: "/home/${{ secrets.EC2_USER }}/rabbitmq"
+          strip_components: 1
+
+      - name: Deploy RabbitMQ container
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          RABBITMQ_USERNAME: ${{ secrets.RABBITMQ_USERNAME }}
+          RABBITMQ_PASSWORD: ${{ secrets.RABBITMQ_PASSWORD }}
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          envs: RABBITMQ_USERNAME,RABBITMQ_PASSWORD
+          script: |
+            set -e
+
+            cd /home/${{ secrets.EC2_USER }}/rabbitmq
+
+            # Crea de forma segura la red que definimos en tus compose y application.yml
+            docker network create guia-network || true
+
+            cat > .env <<EOF
+            RABBITMQ_USERNAME=${RABBITMQ_USERNAME}
+            RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
+            EOF
+
+            docker compose -f compose.rabbitmq.yml --env-file .env pull
+            docker compose -f compose.rabbitmq.yml --env-file .env up -d
+
+            # Verifica que el contenedor levantó correctamente
+            docker ps --filter name=rabbitmq-guia
