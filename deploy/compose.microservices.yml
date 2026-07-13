@@ -18,7 +18,8 @@ services:
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
       AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME}
-      SPRING_DATASOURCE_HIKARI_CONNECTION_PROPERTIES: oracle.net.tns_admin=/app/src/main/resources/Wallet_MBD,oracle.net.wallet_location=/app/src/main/resources/Wallet_MBD
+      SPRING_JPA_PROPERTIES_ORACLE_NET_TNS_ADMIN: /app/src/main/resources/Wallet_MBD
+      SPRING_JPA_PROPERTIES_ORACLE_NET_WALLET_LOCATION: /app/src/main/resources/Wallet_MBD
     networks:
       - guia-network
 
@@ -38,7 +39,8 @@ services:
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
       AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME}
-      SPRING_DATASOURCE_HIKARI_CONNECTION_PROPERTIES: oracle.net.tns_admin=/app/src/main/resources/Wallet_MBD,oracle.net.wallet_location=/app/src/main/resources/Wallet_MBD
+      SPRING_JPA_PROPERTIES_ORACLE_NET_TNS_ADMIN: /app/src/main/resources/Wallet_MBD
+      SPRING_JPA_PROPERTIES_ORACLE_NET_WALLET_LOCATION: /app/src/main/resources/Wallet_MBD
     networks:
       - guia-network
 
