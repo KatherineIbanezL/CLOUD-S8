@@ -22,6 +22,8 @@ WORKDIR /app
 COPY --from=buildstage /app/target/*.jar /app/app.jar
 
 
+COPY src/main/resources/Wallet_MBD /app/src/main/resources/Wallet_MBD
+
 
 # Directorio local para enlazar el montaje de Amazon EFS
 RUN mkdir -p /app/efs

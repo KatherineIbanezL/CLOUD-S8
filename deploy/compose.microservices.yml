@@ -18,8 +18,6 @@ services:
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
       AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME}
-    volumes:
-      - ../producer-service/src/main/resources/Wallet_MBD:/app/src/main/resources/Wallet_MBD
     networks:
       - guia-network
 
@@ -39,8 +37,6 @@ services:
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
       AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME}
-    volumes:
-      - ../consumer-service/src/main/resources/Wallet_MBD:/app/src/main/resources/Wallet_MBD
     networks:
       - guia-network
 
