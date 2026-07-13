@@ -45,5 +45,5 @@ services:
       - guia-network
 
 networks:
-  cloudnative-net:
+  guia-network:
     external: true
