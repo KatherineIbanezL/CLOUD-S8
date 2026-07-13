@@ -49,16 +49,21 @@ jobs:
 
             cd /home/${{ secrets.EC2_USER }}/rabbitmq
 
-            # Crea de forma segura la red que definimos en tus compose y application.yml
             docker network create guia-network || true
+
+            # Descargar Docker Compose portátil local
+            if [ ! -f ./docker-compose ]; then
+              curl -L "https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-$(uname -s)-$(uname -m)" -o ./docker-compose
+              chmod +x ./docker-compose
+            fi
 
             cat > .env <<EOF
             RABBITMQ_USERNAME=${RABBITMQ_USERNAME}
             RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
             EOF
 
-            docker-compose -f compose.rabbitmq.yml --env-file .env pull
-            docker-compose -f compose.rabbitmq.yml --env-file .env up -d
+            # Ejecución local
+            ./docker-compose -f compose.rabbitmq.yml --env-file .env pull
+            ./docker-compose -f compose.rabbitmq.yml --env-file .env up -d
 
-            # Verifica que el contenedor levantó correctamente
             docker ps --filter name=rabbitmq-guia

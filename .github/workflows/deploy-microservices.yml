@@ -134,11 +134,9 @@ jobs:
           IMAGE_TAG: ${{ env.IMAGE_TAG }}
           RABBITMQ_USERNAME: ${{ secrets.RABBITMQ_USERNAME }}
           RABBITMQ_PASSWORD: ${{ secrets.RABBITMQ_PASSWORD }}
-          # Tus nombres de variables mapeadas con Azure
           ISSUER_URI: ${{ secrets.ISSUER_URI }}
           JWK_SET_URI: ${{ secrets.JWK_SET_URI }}
           AUDIENCE: ${{ secrets.AUDIENCE }}
-          # Tus variables obligatorias de AWS para subir guías a S3
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
@@ -154,8 +152,13 @@ jobs:
 
             cd /home/${{ secrets.EC2_USER }}/producer-service
 
-            # Red de comunicación externa propia del proyecto
             docker network create guia-network || true
+
+            if [ ! -f ./docker-compose ]; then
+              echo "Descargando Docker Compose portátil..."
+              curl -L "https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-$(uname -s)-$(uname -m)" -o ./docker-compose
+              chmod +x ./docker-compose
+            fi
 
             cat > .env <<EOF
             DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
@@ -174,10 +177,9 @@ jobs:
 
             echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
 
-            docker-compose -f compose.microservices.yml --env-file .env pull
-            docker-compose -f compose.microservices.yml --env-file .env up -d
+            ./docker-compose -f compose.microservices.yml --env-file .env pull
+            ./docker-compose -f compose.microservices.yml --env-file .env up -d
 
-            # Limpieza y verificación de contenedores activos
             docker image prune -f
             docker ps --filter name=producer-service
             docker ps --filter name=consumer-service
