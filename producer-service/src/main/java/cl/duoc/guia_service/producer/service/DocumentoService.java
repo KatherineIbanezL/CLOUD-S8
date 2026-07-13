@@ -47,7 +47,7 @@ public class DocumentoService {
         // 3. Crear el evento estructurado (record)
         GuiaCreadaEvent evento = new GuiaCreadaEvent(
                 eventId,
-                nombre,
+                s3Key,
                 transportista,
                 numeroGuia,
                 doc.getEstado()

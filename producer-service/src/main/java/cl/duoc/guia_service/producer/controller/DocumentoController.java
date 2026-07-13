@@ -27,11 +27,10 @@ public class DocumentoController {
         this.documentoService = documentoService;
     }
 
-    // 1. ENDPOINT: SUBIR / GENERAR RESUMEN (Mapeado a la pauta del Profesor)
+    // 1. ENDPOINT: SUBIR / GENERAR RESUMEN
     @PostMapping("/generar")
     public ResponseEntity<CrearGuiaResponse> generarDocumento(@Valid @RequestBody CrearGuiaRequest request) {
         try {
-            // Simulamos los bytes del PDF en memoria
             byte[] mockPdf = "Contenido simulado del PDF".getBytes(); 
             
             // Delegamos todo al servicio Guarda en Oracle local, sube a S3 y envía el evento a RabbitMQ
