@@ -34,7 +34,7 @@ spring:
           issuer-uri: ${ISSUER_URI}
           jwk-set-uri: ${JWK_SET_URI}
 
-  # 5. CONFIGURACIÓN DE CREDENCIALES Y SERVICIOS AWS (DENTRO DE SPRING)
+  # 5. CONFIGURACIÓN DE CREDENCIALES Y SERVICIOS AWS 
   cloud:
     aws:
       credentials:
@@ -44,26 +44,26 @@ spring:
       region:
         static: us-east-1
 
-  # Propiedades de negocio personalizadas (Se quedan dentro de Spring)
-  oracle:
-    net:
-      tns_admin: /app/src/main/resources/Wallet_MBD
-      wallet_location: /app/src/main/resources/Wallet_MBD
+# Propiedades de negocio personalizadas
+oracle:
+  net:
+    tns_admin: /app/src/main/resources/Wallet_MBD
+    wallet_location: /app/src/main/resources/Wallet_MBD
 
-  aws:
-    s3:
-      bucket-name: ${AWS_S3_BUCKET_NAME:bucketduoc-s1}
+aws:
+  s3:
+    bucket-name: ${AWS_S3_BUCKET_NAME:bucketduoc-s1}
 
-  app:
-    security:
-      audience: ${AUDIENCE}
-    rabbitmq:
-      exchange: guia.exchange
-      queue: cola-guias-exitosas
-      routing-key: guia.routing.key
-      dlx-exchange: guia.dlx.exchange
-      dlq: cola-guias-errores
-      dlq-routing-key: guia.dlq.routing.key
+app:
+  security:
+    audience: ${AUDIENCE}
+  rabbitmq:
+    exchange: guia.exchange
+    queue: cola-guias-exitosas
+    routing-key: guia.routing.key
+    dlx-exchange: guia.dlx.exchange
+    dlq: cola-guias-errores
+    dlq-routing-key: guia.dlq.routing.key
 
 server:
   port: ${SERVER_PORT:8081}
