@@ -57,8 +57,8 @@ jobs:
             RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
             EOF
 
-            docker compose -f compose.rabbitmq.yml --env-file .env pull
-            docker compose -f compose.rabbitmq.yml --env-file .env up -d
+            docker-compose -f compose.rabbitmq.yml --env-file .env pull
+            docker-compose -f compose.rabbitmq.yml --env-file .env up -d
 
             # Verifica que el contenedor levantó correctamente
             docker ps --filter name=rabbitmq-guia

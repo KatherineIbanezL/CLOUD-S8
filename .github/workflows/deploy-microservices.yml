@@ -174,8 +174,8 @@ jobs:
 
             echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
 
-            docker compose -f compose.microservices.yml --env-file .env pull
-            docker compose -f compose.microservices.yml --env-file .env up -d
+            docker-compose -f compose.microservices.yml --env-file .env pull
+            docker-compose -f compose.microservices.yml --env-file .env up -d
 
             # Limpieza y verificación de contenedores activos
             docker image prune -f
